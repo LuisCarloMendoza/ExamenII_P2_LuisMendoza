@@ -4,11 +4,13 @@
  */
 package examenii_p2_luismendoza;
 
+import java.io.Serializable;
+
 /**
  *
  * @author luiscarlomendoza
  */
-public class Partido {
+public class Partido implements Serializable{
     private Equipo equipo1;
     private Equipo equipo2;
     private int resultado1;

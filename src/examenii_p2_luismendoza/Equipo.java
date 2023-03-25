@@ -4,11 +4,13 @@
  */
 package examenii_p2_luismendoza;
 
+import java.io.Serializable;
+
 /**
  *
  * @author luiscarlomendoza
  */
-public class Equipo {
+public class Equipo implements Serializable{
     private String nombre;
     private int puntos;
 

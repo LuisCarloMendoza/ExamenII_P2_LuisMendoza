@@ -10,13 +10,14 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  *
  * @author luiscarlomendoza
  */
-public class adminDeportes {
+public class adminDeportes implements Serializable{
     private ArrayList<Deporte> deportes = new ArrayList();
     private File archivo = null;
 

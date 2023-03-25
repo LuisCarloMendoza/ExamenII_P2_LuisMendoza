@@ -4,9 +4,18 @@
  */
 package examenii_p2_luismendoza;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -40,11 +49,11 @@ public class Main extends javax.swing.JFrame {
                 if (deportes.get(i).getTorneos().get(j).equals(torneo_seleccionado)) {
                     for (int k = 0; k < deportes.get(i).getTorneos().get(j).getEquipos().size(); k++) {
                         tablaEquipos.addRow(new Object[]{
-                        deportes.get(i).getTorneos().get(j).getEquipos().get(k).getNombre(),
-                        deportes.get(i).getTorneos().get(j).getEquipos().get(k).getPuntos()
-                    });
+                            deportes.get(i).getTorneos().get(j).getEquipos().get(k).getNombre(),
+                            deportes.get(i).getTorneos().get(j).getEquipos().get(k).getPuntos()
+                        });
                     }
-                    
+
                 }
             }
 
@@ -423,6 +432,11 @@ public class Main extends javax.swing.JFrame {
 
         jb_cargar.setText("Cargar");
         jb_cargar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jb_cargar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jb_cargarMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -664,24 +678,59 @@ public class Main extends javax.swing.JFrame {
 
     private void jList1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jList1MouseClicked
         // TODO add your handling code here:
-        
+
         for (int i = 0; i < torneo_seleccionado.getPartidos().size(); i++) {
-            if(torneo_seleccionado.getPartidos().get(i).getEquipo1().equals(jList1.getSelectedValue())){
+            if (torneo_seleccionado.getPartidos().get(i).getEquipo1().equals(jList1.getSelectedValue())) {
                 jTextArea1.setText(torneo_seleccionado.getPartidos().get(i).toString());
-            } else if(torneo_seleccionado.getPartidos().get(i).getEquipo2().equals(jList1.getSelectedValue())){
+            } else if (torneo_seleccionado.getPartidos().get(i).getEquipo2().equals(jList1.getSelectedValue())) {
                 jTextArea1.setText(torneo_seleccionado.getPartidos().get(i).toString());
             }
         }
-  
-        
+
+
     }//GEN-LAST:event_jList1MouseClicked
 
     private void jb_guardarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jb_guardarMouseClicked
         // TODO add your handling code here:
-        
-        
-        
+        JFileChooser fc = new JFileChooser();
+        int op = fc.showSaveDialog(this);
+        if (op == JFileChooser.APPROVE_OPTION) {
+            archivoOpen = fc.getSelectedFile();
+            if (!archivoOpen.exists()) {
+                archivoOpen = new File(archivoOpen.getPath() + ".cbm");
+            } else {
+                String[] path = archivoOpen.getPath().split("\\.");
+                if (path[path.length - 1].equals("cbm")) {
+                    try {
+                        FileOutputStream fw = new FileOutputStream(archivoOpen);
+                        ObjectOutputStream bw = new ObjectOutputStream(fw);
+                        bw.writeObject((Deporte) deporte_seleccionada );
+                        fw.close();
+                        bw.close();
+                        
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }
+        }
+
+//        adminDeportes ad = new adminDeportes("./Deportes.cbm");
+//        ad.setDeportes(deportes);
+//        ad.escribirArchivo();
+
+
     }//GEN-LAST:event_jb_guardarMouseClicked
+
+    private void jb_cargarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jb_cargarMouseClicked
+        // TODO add your handling code here:
+//        adminDeportes ap = new adminDeportes("./Deportes.cbm");
+//        ap.cargarArchivo();
+//        deportes = ap.getDeportes();
+
+
+    }//GEN-LAST:event_jb_cargarMouseClicked
 
     /**
      * @param args the command line arguments
@@ -763,5 +812,6 @@ public class Main extends javax.swing.JFrame {
     DefaultMutableTreeNode nodo_seleccionado;
     Deporte deporte_seleccionada;
     Torneo torneo_seleccionado;
+    File archivoOpen;
 
 }
